@@ -11,21 +11,23 @@
         <h1>Snake Water Gun Game</h1>
         <div class="game-area">
             <div class="choices">
-                <button onclick="playGame('s')" class="choice-btn">
-                    🐍 Snake
+                <button onclick="handleUserInput()" class="choice-btn">
+                    Input by keyboard
                 </button>
-                <button onclick="playGame('w')" class="choice-btn">
-                    💧 Water
-                </button>
-                <button onclick="playGame('g')" class="choice-btn">
-                    🔫 Gun
-                </button>
+                <button class="choice-btn">🐍 Snake</button>
+                <button class="choice-btn">💧 Water</button>
+                <button class="choice-btn">🔫 Gun</button>
             </div>
             <div class="result-area">
                 <p id="user-choice">Your choice: </p>
                 <p id="computer-choice">Computer's choice: </p>
                 <p id="result">Choose your move!</p>
             </div>
+        </div>
+        <div class="score-box">
+            <p>Score</p>
+            <p>You: <span id="user-score">0</span></p>
+            <p>Computer: <span id="computer-score">0</span></p>
         </div>
     </div>
     <script src="script.js"></script>
