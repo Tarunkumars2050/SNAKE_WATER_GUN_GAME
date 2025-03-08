@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Water Gun Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Snake Water Gun Game</h1>
+        <div class="game-area">
+            <div class="choices">
+                <button onclick="playGame('s')" class="choice-btn">
+                    🐍 Snake
+                </button>
+                <button onclick="playGame('w')" class="choice-btn">
+                    💧 Water
+                </button>
+                <button onclick="playGame('g')" class="choice-btn">
+                    🔫 Gun
+                </button>
+            </div>
+            <div class="result-area">
+                <p id="user-choice">Your choice: </p>
+                <p id="computer-choice">Computer's choice: </p>
+                <p id="result">Choose your move!</p>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
