@@ -4,15 +4,67 @@
     box-sizing: border-box;
 }
 
+/* Remove duplicate body style and keep this one */
 body {
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: #1a1a1a;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+/* Remove duplicate star class and keep this enhanced version */
+.star {
+    position: absolute;
+    animation: floatStar 3s ease-out forwards;
+    opacity: 0.9;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    font-size: 60px;
+}
+
+/* Remove duplicate bounce animation and keep this version */
+@keyframes bounce {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 0; }
+}
+
+.bubble {
+    position: absolute;
+    border-radius: 50%;
+    animation: floatBubble 4s ease-out forwards;
+    opacity: 0.8;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+@keyframes floatStar {
+    0% {
+        transform: translate(0, 0) scale(0.5);
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(0, -300px) scale(1.2);
+        opacity: 0;
+    }
+}
+
+@keyframes floatBubble {
+    0% {
+        transform: translate(0, 0) scale(0.3);
+        opacity: 0;
+    }
+    20% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translate(0, -400px) rotate(360deg) scale(1.5);
+        opacity: 0;
+    }
+}
 .container {
     background: rgba(255, 255, 255, 0.9);
     padding: 2rem;
@@ -65,4 +117,90 @@ h1 {
     font-weight: bold;
     margin-top: 1rem;
     color: #333;
+}
+.score-box {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.celebration {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.star {
+    position: absolute;
+    animation: explode 1s ease-out forwards;
+    opacity: 0.7;
+    font-size: 60px;
+}
+
+.draw-message {
+    position: absolute;
+    font-size: 48px;
+    color: #ffffff;
+    text-align: center;
+    animation: bounce 1.5s ease-in-out infinite;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.crying-emoji {
+    position: absolute;
+    font-size: 150px;
+    animation: pulseFade 2s ease-in-out forwards;
+}
+
+.encourage-message {
+    position: absolute;
+    font-size: 36px;
+    color: #ffffff;
+    text-align: center;
+    animation: fadeIn 1s ease-out forwards;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.draw-message {
+    position: absolute;
+    font-size: 32px;
+    color: #667eea;
+    text-align: center;
+    animation: bounce 1.5s ease-in-out infinite;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+}
+
+@keyframes pulseFade {
+    0% { transform: scale(0.5); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 0; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+@keyframes bounce {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 0; }
 }
