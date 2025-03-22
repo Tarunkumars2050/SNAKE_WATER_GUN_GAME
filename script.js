@@ -1,5 +1,6 @@
 let userScore = 0;
 let computerScore = 0;
+let activeAnimation = null;
 
 function createStar(x, y) {
     const star = document.createElement('div');
@@ -34,11 +35,7 @@ function createBubble(x, y) {
     return bubble;
 }
 
-// Add this variable at the top of your script
-let activeAnimation = null;
-
 function celebrate(type, x, y) {
-    // Clear any existing celebration
     if (activeAnimation) {
         activeAnimation.remove();
     }
@@ -49,7 +46,6 @@ function celebrate(type, x, y) {
     activeAnimation = celebration;
 
     if (type === 'win') {
-        // Create stars and bubbles
         for (let i = 0; i < 100; i++) {
             const star = createStar(
                 x + (Math.random() - 0.5) * 600,
@@ -83,6 +79,7 @@ function celebrate(type, x, y) {
         drawText.innerHTML = 'Match Draw!<br>Try again';
         drawText.style.left = `${x - 100}px`;
         drawText.style.top = `${y - 50}px`;
+        drawText.style.color = '#ff0000'; // Changed to red color
         celebration.appendChild(drawText);
     }
 
@@ -94,86 +91,7 @@ function celebrate(type, x, y) {
     }, 3000);
 }
 
-// Add sound effects function
-function playSound(type) {
-    const sounds = {
-        win: '🎵',
-        lose: '🔔',
-        draw: '🎶'
-    };
-    // Create and play sound (you can replace emoji with actual sound files)
-    const audio = new Audio();
-    audio.play().catch(e => console.log('Sound blocked by browser policy'));
-}
-// Add this at the beginning of your script.js file
-function handleUserInput() {
-    const userChoice = prompt("Enter your choice:\n's' for Snake\n'w' for Water\n'g' for Gun").toLowerCase();
-    
-    if (userChoice === 's' || userChoice === 'w' || userChoice === 'g') {
-        playGame(userChoice);
-    } else {
-        alert("Invalid input! Please enter 's', 'w', or 'g'");
-    }
-}
-
 // Add click event listeners to buttons
-document.addEventListener('DOMContentLoaded', function() {
-    const buttons = document.querySelectorAll('.choice-btn');
-    buttons.forEach(button => {
-        button.addEventListener('click', function() {
-            const choice = this.textContent.includes('Snake') ? 's' : 
-                          this.textContent.includes('Water') ? 'w' : 'g';
-            playGame(choice);
-        });
-    });
-});
-
-// Update keyboard controls to include prompt when no button is clicked
-document.addEventListener('keydown', (e) => {
-    const key = e.key.toLowerCase();
-    if (key === 's' || key === 'w' || key === 'g') {
-        playGame(key);
-    }
-});
-
-function playGame(userChoice) {
-    const choices = [0, 1, 2];
-    const computerChoice = choices[Math.floor(Math.random() * choices.length)];
-    
-    const userDict = {'w': 0, 'g': 1, 's': 2};
-    const userD = {'w': "Water", 'g': "Gun", 's': "Snake"};
-    const compD = {0: "Water", 1: "Gun", 2: "Snake"};
-
-    document.getElementById('user-choice').textContent = `Your choice: ${userD[userChoice]}`;
-    document.getElementById('computer-choice').textContent = `Computer's choice: ${compD[computerChoice]}`;
-
-    let result;
-    const centerX = window.innerWidth / 2;
-    const centerY = window.innerHeight / 2;
-
-    if(computerChoice === userDict[userChoice]) {
-        result = "It's a Draw!";
-        celebrate('draw', centerX, centerY);
-    } else if(
-        (computerChoice === 0 && userDict[userChoice] === 1) ||
-        (computerChoice === 1 && userDict[userChoice] === 2) ||
-        (computerChoice === 2 && userDict[userChoice] === 0)
-    ) {
-        result = "You Lost!";
-        computerScore++;
-        celebrate('lose', centerX, centerY);
-    } else {
-        result = "You Win!";
-        userScore++;
-        celebrate('win', centerX, centerY);
-    }
-
-    document.getElementById('result').textContent = result;
-    document.getElementById('user-score').textContent = userScore;
-    document.getElementById('computer-score').textContent = computerScore;
-}
-
-// Update the button click handlers
 document.addEventListener('DOMContentLoaded', function() {
     const buttons = document.querySelectorAll('.choice-btn');
     buttons.forEach(button => {
@@ -191,4 +109,64 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+    
+    // Add reset button
+    addResetButton();
 });
+
+function playGame(userChoice) {
+    const choices = [0, 1, 2];
+    const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+    
+    const userDict = {'w': 0, 'g': 1, 's': 2};
+    const userD = {'w': "Water", 'g': "Gun", 's': "Snake"};
+    const compD = {0: "Water", 1: "Gun", 2: "Snake"};
+
+    document.getElementById('user-choice').textContent = `Your choice: ${userD[userChoice]}`;
+    document.getElementById('computer-choice').textContent = `Computer's choice: ${compD[computerChoice]}`;
+
+    let result;
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+
+    if (computerChoice === userDict[userChoice]) {
+        result = "It's a Draw!";
+        celebrate('draw', centerX, centerY);
+    } else if (
+        (computerChoice === 2 && userDict[userChoice] === 0) || // Water beats Snake
+        (computerChoice === 0 && userDict[userChoice] === 1) || // Gun beats Water
+        (computerChoice === 1 && userDict[userChoice] === 2)    // Snake beats Gun
+    ) {
+        result = "You Lost!";  // Changed from "You Win!"
+        computerScore++;       // Changed to increment computer's score
+        celebrate('lose', centerX, centerY);  // Changed celebration to lose
+    } else {
+        result = "You Win!";   // Changed from "You Lost!"
+        userScore++;          // Changed to increment user's score
+        celebrate('win', centerX, centerY);   // Changed celebration to win
+    }
+
+    document.getElementById('result').textContent = result;
+    document.getElementById('user-score').textContent = userScore;
+    document.getElementById('computer-score').textContent = computerScore;
+}
+
+function addResetButton() {
+    const container = document.querySelector('.container');
+    const resetBtn = document.createElement('button');
+    resetBtn.textContent = 'Reset Game';
+    resetBtn.className = 'choice-btn';
+    resetBtn.style.marginTop = '20px';
+    resetBtn.addEventListener('click', resetGame);
+    container.appendChild(resetBtn);
+}
+
+function resetGame() {
+    userScore = 0;
+    computerScore = 0;
+    document.getElementById('user-score').textContent = userScore;
+    document.getElementById('computer-score').textContent = computerScore;
+    document.getElementById('user-choice').textContent = 'Your choice: ';
+    document.getElementById('computer-choice').textContent = "Computer's choice: ";
+    document.getElementById('result').textContent = 'Choose your move!';
+}
